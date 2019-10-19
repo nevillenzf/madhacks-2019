@@ -4,7 +4,8 @@
   "description": "Backend Express Server for webapp ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"This is a test\""
+    "test": "echo \"This is a test\"",
+    "run-server": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -18,5 +19,9 @@
   "homepage": "https://github.com/nevillenzf/madhacks-2019#readme",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "nodemon": "^1.19.4"
   }
 }
