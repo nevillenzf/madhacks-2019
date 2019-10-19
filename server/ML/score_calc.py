@@ -40,6 +40,9 @@ with open('map.csv',"rb") as csv_file:
 print("Parsed {} lines from the file".format(line_count))
 #dumb algorithm for calculating score for now
 #disclosure score takes up 2/10
+print("Range for Scope 1 is {} - {}".format(scope1_min, scope1_max))
+print("Range for Scope 2 is {} - {}".format(scope2_min, scope2_max))
+
 itr = 0
 
 #ignore first line cause it is schema
@@ -63,9 +66,9 @@ for row in my_dict:
     else:
         scope2 = 0
 
-    score = (disclosure * 2.0 / 100)
-    + (float(scope1) * 5.0 / (scope1_max - scope1_min))
-    + (float(scope2) * 3.0 / (scope2_max - scope2_min))
+    score = (disclosure * 2.0 / 100) \
+    + (float(scope1) * 5.0 / (scope1_max - scope1_min)) \
+    + (float(scope2) * 3.0 / (scope2_max - scope2_min)) 
     row.append(score)
     #row 15 is the score
     print("Calculated score for {} is {}".format(row[0],row[15]))
