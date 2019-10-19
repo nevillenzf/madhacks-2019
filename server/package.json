@@ -1,0 +1,19 @@
+{
+  "name": "co2 rankings backend",
+  "version": "1.0.0",
+  "description": "Backend Express Server for webapp ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"This is a test\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nevillenzf/madhacks-2019.git"
+  },
+  "author": "Heeirun Jayakumar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nevillenzf/madhacks-2019/issues"
+  },
+  "homepage": "https://github.com/nevillenzf/madhacks-2019#readme"
+}
