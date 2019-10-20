@@ -6,10 +6,10 @@ class Company extends React.Component {
   render() {
     return (
       <div>
-        <Card style={{marginTop: '5px', marginBottom: '5px', padding: '10px'}}>
+        <Card class="companyCard" style={{backgroundColor: '#66be41', marginTop: '5px', marginBottom: '5px', padding: '10px', paddingTop: '2%'}}>
           <Card.Body>
-            <Card.Title>Company Name</Card.Title>
-            <Card.Subtitle style={{color:"#f54b42"}}>Company Score</Card.Subtitle>
+            <Card.Subtitle style={{color: '#416732', backgroundColor: '#a0da5b', padding: '1%'}}>[Company Name]</Card.Subtitle>
+            <Card.Title style={{color:"#ffffff", padding: '1%'}}>[Company Score]</Card.Title>
             <Card.Text id="expandInformation" style={{paddingTop: '5px'}}>
             </Card.Text>
           </Card.Body>

@@ -8,7 +8,7 @@ class SearchBar extends React.Component {
     console.log("testing");
     return (
       <>
-        <Card style={{height: 'calc(100vh - 10px)', width: 'calc(20vw - 5px)', marginLeft: '5px',  position: 'fixed'}}>
+        <Card style={{height: 'calc(100vh - 10px)', width: 'calc(20vw - 5px)', marginLeft: '5px',  position: 'fixed', backgroundColor: '#a0da5b', color: '#416732'}}>
           <Card.Body style={{padding: '10px'}}>
             <Card.Title>Filter Companies</Card.Title>
             <Form>
