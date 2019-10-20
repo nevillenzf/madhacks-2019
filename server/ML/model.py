@@ -11,6 +11,7 @@ import csv
 
 from tensorflow import keras
 from tensorflow.keras import layers
+from tensorflow.keras.models import model_from_json, load_model
 
 PATH = "./models"
 def norm(x):
@@ -65,6 +66,14 @@ class PrintDot(keras.callbacks.Callback):
 
 print("Loaded matplotlib, pandas, seaborn and tensorflow successfully.")
 
+file_found = False
+try:
+    f = open('{}/model.json'.format(PATH), 'r')
+    file_found = True
+except:
+    file_found = False
+
+
 dataset_path = "./new_file.csv"
 my_dict = []
 
@@ -107,7 +116,6 @@ test_dataset = dataset.drop(train_dataset.index)
 
 #sns.pairplot(train_dataset[["Disclosure_Score", "Scope_1", "Scope_2", "Score"]], diag_kind="kde")
 
-
 train_stats = train_dataset.describe(include = 'all')
 train_stats.pop("Score")
 train_stats = train_stats.transpose()
@@ -119,25 +127,39 @@ test_labels = test_dataset.pop('Score')
 normed_train_data = norm(train_dataset)
 normed_test_data = norm(test_dataset)
 
-model = build_model()
 
-print(model.summary())
+if file_found is False:
 
-example_batch = normed_train_data[:10]
-example_result = model.predict(example_batch)
-print(example_result)
+    model = build_model()
 
-EPOCHS = 1000
+    print(model.summary())
 
-history = model.fit(
-  normed_train_data, train_labels,
-  epochs=EPOCHS, validation_split = 0.2, verbose=0,
-  callbacks=[PrintDot()])
+    example_batch = normed_train_data[:10]
+    example_result = model.predict(example_batch)
+    print(example_result)
 
-hist = pd.DataFrame(history.history)
-hist['epoch'] = history.epoch
+    EPOCHS = 1000
 
-#plot_history(history)
+    history = model.fit(
+      normed_train_data, train_labels,
+      epochs=EPOCHS, validation_split = 0.2, verbose=0,
+      callbacks=[PrintDot()])
+
+    hist = pd.DataFrame(history.history)
+    hist['epoch'] = history.epoch
+
+    #plot_history(history)
+else:
+    print("Loaded trained model. ")
+    with open('{}/model.json'.format(PATH), 'r') as f:
+        model = model_from_json(f.read())
+    model.load_weights('{}/model.h5'.format(PATH))
+
+optimizer = tf.keras.optimizers.RMSprop(0.001)
+
+model.compile(loss='mse',
+            optimizer=optimizer,
+            metrics=['mae', 'mse'])
 
 loss, mae, mse = model.evaluate(normed_test_data, test_labels, verbose=2)
 
@@ -153,13 +175,13 @@ plt.axis('square')
 plt.xlim([0,plt.xlim()[1]])
 plt.ylim([0,plt.ylim()[1]])
 plt.plot([-100, 100], [-100, 100])
-plt.show()
+#plt.show()
 
 error = test_predictions - test_labels
 plt.hist(error, bins = 25)
 plt.xlabel("Prediction Error [Score]")
 plt.ylabel("Count")
-plt.show()
+#plt.show()
 
 model.save_weights('{}/model.h5'.format(PATH))
 # Save the model architecture
