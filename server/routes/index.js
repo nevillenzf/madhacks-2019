@@ -1,10 +1,12 @@
+const dotenv = require('dotenv');
+dotenv.config();
 const routes = require('express').Router();
 const Pool = require('pg').Pool
 const pool = new Pool({
-    user: 'me',
-    host: 'localhost',
-    database: 'metricdata',
-    password: 'password',
+    user: process.env.DBUSER || "me",
+    host: process.env.DBHOST || "localhost",
+    database: process.env.DBNAME || "metricdata",
+    password: process.env.DBPASS || "password",
     port: 5432,
 });
 
@@ -20,4 +22,4 @@ routes.get('/companies/', (req, res) =>{
     });
 });
 
-  module.exports = routes;
+module.exports = routes;
