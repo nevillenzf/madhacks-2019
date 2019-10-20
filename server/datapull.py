@@ -1,33 +1,53 @@
 import csv
-from sqlalchemy import create_engine  
+from sqlalchemy import psycopg2
+import os
+import sqlalchemy
+from dotenv import load_dotenv
 from sqlalchemy import Column, String, Integer, Numeric
 from sqlalchemy.ext.declarative import declarative_base  
 from sqlalchemy.orm import sessionmaker
 
-db_string = "postgres://admin:admin@http://127.0.0.1:51894/?key=9f9ce5d9-3a3c-4514-ab16-090940cbc28c"
-db = create_engine(db_string)
-base = declarative_base()
+load_dotenv()
 
-class Company(base):
-    __tablename__ = 'metricData'
+# db = sqlalchemy.create_engine(
+#     # sqlalchemy.engine.url.URL(
+#     #     drivername="postgres+pg8000",
+#     #     username=os.getenv("DBUSER"),
+#     #     password=os.getenv("DBPASS"),
+#     #     database=os.getenv("DBNAME"),
+#     #     query={
+#     #         'unix_sock': '/cloudsql/{}/.s.PGSQL.5432'.format(os.getenv("DBHOST"))
+#     #     }
+#     # )
+#     "172.17.0.1:5432"
+# )
 
-    id = Column(Integer, primary_key=True)
-    company_name = Column(String)
-    isin = Column(String)
-    country = Column(String)
-    disclosure_score = Column(Integer)
-    performance_band = Column(String)
-    scope_1 = Column(Numeric)
-    scope_2 = Column(Numeric)
-    calc_score = Column(Numeric)
+conn = psycopg2.connect(dbname=os.getenv("DBNAME"), user=os.getenv("DBUSER"), password=os.getenv("DBPASS"), host=os.getenv("DBHOST"), port='5432', sslmode='require')
+cur = conn.cursor()
 
-Session = sessionmaker(db)
-session = Session()
 
-base.metadata.create_all(db)
+# base = declarative_base()
+
+# class Company(base):
+#     __tablename__ = 'metricData'
+
+#     id = Column(Integer, primary_key=True)
+#     company_name = Column(String)
+#     isin = Column(String)
+#     country = Column(String)
+#     disclosure_score = Column(Integer)
+#     performance_band = Column(String)
+#     scope_1 = Column(Numeric)
+#     scope_2 = Column(Numeric)
+#     calc_score = Column(Numeric)
+
+# Session = sessionmaker(db)
+# session = Session()
+
+# base.metadata.create_all(db)
 
 idNum = 0
-with open('newMap.csv') as csvfile:
+with open('dataFile.csv') as csvfile:
     readCSV = csv.reader(csvfile, delimiter=',')
     for row in readCSV:
         cName = row[0]
@@ -39,12 +59,13 @@ with open('newMap.csv') as csvfile:
         scope2 = row[6]
         currScore = row[7]
 
-        input = Company(id = idNum, company_name = cName, isin = iNum, country = cntry,
-                        disclosure_score = dScore, performance_band = pForm,
-                        scope_1 = scope1, scope_2 = scope2, calc_score = currScore)
+        print(idNum)
+        # input = Company(id = idNum, company_name = cName, isin = iNum, country = cntry,
+        #                 disclosure_score = dScore, performance_band = pForm,
+        #                 scope_1 = scope1, scope_2 = scope2, calc_score = currScore)
 
-        session.add(input)
-        session.commit()
+        # session.add(input)
+        # session.commit()
         idNum += 1
 
 
