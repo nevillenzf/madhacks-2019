@@ -17,6 +17,10 @@ with open('dataFile.csv') as csvfile:
             scope2 = row[6]
             currScore = row[7]
 
+            if abs(float(currScore) - 0.0) < 0.0000001:
+                print("here")
+                continue
+
             if not row[1]:
                 iNum = '""'
             if not row[2]:
