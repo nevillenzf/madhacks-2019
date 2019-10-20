@@ -12,6 +12,7 @@ import csv
 from tensorflow import keras
 from tensorflow.keras import layers
 
+PATH = "./models"
 def norm(x):
   return (x - train_stats['mean']) / train_stats['std']
 
@@ -141,3 +142,26 @@ hist['epoch'] = history.epoch
 loss, mae, mse = model.evaluate(normed_test_data, test_labels, verbose=2)
 
 print("Testing set Mean Abs Error: {:5.2f} Score".format(mae))
+
+test_predictions = model.predict(normed_test_data).flatten()
+
+plt.scatter(test_labels, test_predictions)
+plt.xlabel('True Values [Score]')
+plt.ylabel('Predictions [Score]')
+plt.axis('equal')
+plt.axis('square')
+plt.xlim([0,plt.xlim()[1]])
+plt.ylim([0,plt.ylim()[1]])
+plt.plot([-100, 100], [-100, 100])
+plt.show()
+
+error = test_predictions - test_labels
+plt.hist(error, bins = 25)
+plt.xlabel("Prediction Error [Score]")
+plt.ylabel("Count")
+plt.show()
+
+model.save_weights('{}/model.h5'.format(PATH))
+# Save the model architecture
+with open('{}/model.json'.format(PATH), 'w') as f:
+    f.write(model.to_json())
