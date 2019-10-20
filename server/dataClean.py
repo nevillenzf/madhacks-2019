@@ -1,65 +1,42 @@
 import csv
 
-load_dotenv()
-
-# db = sqlalchemy.create_engine(
-#     # sqlalchemy.engine.url.URL(
-#     #     drivername="postgres+pg8000",
-#     #     username=os.getenv("DBUSER"),
-#     #     password=os.getenv("DBPASS"),
-#     #     database=os.getenv("DBNAME"),
-#     #     query={
-#     #         'unix_sock': '/cloudsql/{}/.s.PGSQL.5432'.format(os.getenv("DBHOST"))
-#     #     }
-#     # )
-#     "172.17.0.1:5432"
-# )
-
-conn = psycopg2.connect(dbname=os.getenv("DBNAME"), user=os.getenv("DBUSER"), password=os.getenv("DBPASS"), host=os.getenv("DBHOST"), port='5432', sslmode='require')
-cur = conn.cursor()
-
-
-# base = declarative_base()
-
-# class Company(base):
-#     __tablename__ = 'metricData'
-
-#     id = Column(Integer, primary_key=True)
-#     company_name = Column(String)
-#     isin = Column(String)
-#     country = Column(String)
-#     disclosure_score = Column(Integer)
-#     performance_band = Column(String)
-#     scope_1 = Column(Numeric)
-#     scope_2 = Column(Numeric)
-#     calc_score = Column(Numeric)
-
-# Session = sessionmaker(db)
-# session = Session()
-
-# base.metadata.create_all(db)
-
 idNum = 0
+
 with open('dataFile.csv') as csvfile:
-    readCSV = csv.reader(csvfile, delimiter=',')
-    for row in readCSV:
-        cName = row[0]
-        iNum = row[1]
-        cntry = row [2]
-        dScore = row[3]
-        pForm = row[4]
-        scope1 = row[5]
-        scope2 = row[6]
-        currScore = row[7]
+    with open('cleanData.csv', 'w') as csvwrite:
 
-        print(idNum)
-        # input = Company(id = idNum, company_name = cName, isin = iNum, country = cntry,
-        #                 disclosure_score = dScore, performance_band = pForm,
-        #                 scope_1 = scope1, scope_2 = scope2, calc_score = currScore)
+        readCSV = csv.reader(csvfile, delimiter=',')
+        writer = csv.writer(csvwrite, delimiter=',', quotechar="'", quoting=csv.QUOTE_MINIMAL)
+        for row in readCSV:
+            cName = row[0]
+            iNum = row[1]
+            cntry = row [2]
+            dScore = row[3]
+            pForm = row[4]
+            scope1 = row[5]
+            scope2 = row[6]
+            currScore = row[7]
 
-        # session.add(input)
-        # session.commit()
-        idNum += 1
+            if not row[1]:
+                iNum = '""'
+            if not row[2]:
+                cntry = '""'
+            if not row[3]:
+                dScore = -1
+            if not row[4]:
+                pForm = '""'
+            if not row[5]:
+                scope1 = -1
+            if not row[6]:
+                scope2 = -1
+            if not row[7]:
+                currScore = -1
+
+            # print(idNum)
+
+            writer.writerow([idNum, cName, iNum, cntry, dScore, pForm, scope1, scope2, currScore])
+
+            idNum += 1
 
 
 
