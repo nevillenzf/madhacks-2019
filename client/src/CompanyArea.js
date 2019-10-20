@@ -1,34 +1,26 @@
 import React from 'react';
 import './App.css';
 import Company from './Company';
-import CardColumns from 'react-bootstrap/CardColumns';
 
 class CompanyArea extends React.Component {
   render() {
     return (
       <div style={{margin: '5px'}}>
-
         {this.getCompanies()}
-    
+
       </div>
     )
   }
 
   getCompanies() {
     let companyList = [];
-    for(var i = 0; i < 25; i++) {
-      companyList.push (
-        <Company />
-      )
-    }
-
-    /*
+    var count = 1;
     for(const company of Object.entries(this.props.data)) {
+      var temp = parseInt(company[0]) + 1;
       companyList.push (
-        <Company key={companyList[0]} data={companyList[1]}/>
+        <Company key={company[0]} id={temp} data={company[1]} />
       )
     }
-    */
 
     return companyList;
   }
